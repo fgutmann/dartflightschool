@@ -1,6 +1,6 @@
 library localfilesystem;
 
-import 'package:dartflightschool/protocol.dart';
+import 'protocol.dart';
 import 'dart:html' show window, FileSystem, FileEntry, FileWriter, Blob, DirectoryEntry;
 import 'dart:async';
 
