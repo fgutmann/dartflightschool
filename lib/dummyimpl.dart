@@ -4,13 +4,17 @@ import 'dart:async';
 
 class DummyFs extends Protocol {
   
+  List<File> myfiles = [
+                        new File("blubb", false, 3),
+                        new File("test1", false, 3),
+                        new File("test2", false, 3),
+                        ];
+  
   @override
-  List<File> list(String path) {
-    return [
-            new File("blubb", false, 3),
-            new File("test1", false, 3),
-            new File("test2", false, 3),
-            ];
+  Future<List<File>> list(String path) {
+    var completer = new Completer<List<File>>();
+    completer.complete(myfiles);
+    return completer.future;
   }
 
   @override

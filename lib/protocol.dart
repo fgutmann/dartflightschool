@@ -25,7 +25,7 @@ abstract class Protocol {
    *  List the files and directories at the given path.
    *  Returns null if the given path is not a readable directory.
    */
-  List<File> list(String path);
+  Future<List<File>> list(String path);
   
   /**
    * Opens the given path for writing.
