@@ -5,9 +5,16 @@
         <input class="form-control" id="wsfp-url" type="text" name="url" value="{{url}}" placeholder="URL" />
       </div>
     </from>
-    <ul class="list-group">
+    <ul id="filelist" class="list-group">
       <template repeat="{{file in currentFiles}}">
-        <li class="list-group-item">{{file.name}}</li>
+        <li class="list-group-item">
+          <template if="{{file.isDirectory}}">
+            <a href="#" data-name="{{file.name}}" on-click="{{onDirectoryClick}}">{{file.name}}</a>
+          </template>
+          <template if="{{!file.isDirectory}}">
+            {{file.name}}
+          </template>
+        </li>
       </template>
     </ul>
   </template>
