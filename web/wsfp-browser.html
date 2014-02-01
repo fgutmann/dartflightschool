@@ -13,7 +13,7 @@
           </template>
           <template if="{{!file.isDirectory}}">
             {{file.name}}
-            <a href="#" data-name"{{file.name}}" on-click="{{ onFileCopyClick }}">Copy</a>
+            <a href="#" class="pull-right" data-name"{{file.name}}" on-click="{{ onFileCopyClick }}">Copy</a>
           </template>
         </li>
       </template>

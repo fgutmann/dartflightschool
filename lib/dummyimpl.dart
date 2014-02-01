@@ -23,18 +23,28 @@ class DummyStreamConsumer extends StreamConsumer<List<int>> {
 
 class DummyFs extends Protocol {
   
-  List<File> myfiles = [
+  static List<File> myfiles = [
+                        new File("somedir", true, 2),
                         new File("blubb", false, 3),
                         new File("test1", false, 3),
                         new File("test2", false, 3),
                         ];
+  Map<File, List<File>> subfiles = {
+                                    myfiles[0]:[  new File("subfile1", false, 2),
+                                    new File("subfile2", false, 2),]
+
+  };
   
   Map<File, List<int>> datafiles = {};
   
   @override
   Future<List<File>> list(String path) {
     var completer = new Completer<List<File>>();
-    completer.complete(myfiles);
+    if (path.contains('somedir')) {
+      completer.complete(subfiles[myfiles[0]]);
+    } else {
+      completer.complete(myfiles);
+    }
     return completer.future;
   }
   

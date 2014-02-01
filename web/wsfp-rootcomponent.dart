@@ -7,6 +7,8 @@ import 'dart:html';
 class WsfpRootComponent extends PolymerElement {
   
   bool get applyAuthorStyles => true;
+  //@observable List<String> browsers = ['wsfp://127.0.0.1:1234/'];
+  @reflectable ObservableList<String> browsers = toObservable(['wsfp://127.0.0.1:1234/']);
   
   WsfpRootComponent.created() : super.created() {
   }
@@ -18,5 +20,10 @@ class WsfpRootComponent extends PolymerElement {
         print('got something: ${f}');
       });
     });
+  }
+  
+  void addBrowserClicked(Event e, var detail, Element target) {
+    print("add browser.");
+    browsers.add('dummy:///');
   }
 }
