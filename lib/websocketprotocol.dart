@@ -8,15 +8,17 @@ class WebSocketFs extends p.Protocol {
   String _server;
   WebSocket _socket;
   
+  Completer<List<p.File>> _fileListCompleter;
+  
   WebSocketFs(this._server) {
   }
   
   @override
   Future<List<p.File>> list(String path) {
-    var completer = new Completer<List<p.File>>();
+    _fileListCompleter = new Completer<List<p.File>>();
     var data = JSON.encode({'cmd': 'listfiles'});
     _socket.send(data);
-    return completer.future;
+    return _fileListCompleter.future;
   }
 
   @override
@@ -39,17 +41,23 @@ class WebSocketFs extends p.Protocol {
     _socket = new WebSocket('ws://${_server}/ws');
     _socket.onOpen.listen((Event e) {
       print('onOpen');
+      completer.complete();
     }, onError: (e) {
       print("onOpen had an error? ${e}");
     });
     _socket.onError.listen((Event e) {
-      print('error while connecting: ${e}');
-      completer.completeError(null);
+      print('error while connecting: ${e} ${e.type}');
+      completer.completeError(e);
     }, onError: (e) {
       print('onError had an error? ${e}');
     });
     _socket.onMessage.listen((MessageEvent message) {
       print('got message: ${message.data}');
+      var msg = JSON.decode(message.data);
+      List files = msg['files'];
+      List<p.File> ret = files.map((Map<String, String> e) => new p.File(e['name'], false, 0)).toList();
+      _fileListCompleter.complete(ret);
+      _fileListCompleter = null;
     });
     return completer.future;
   }
