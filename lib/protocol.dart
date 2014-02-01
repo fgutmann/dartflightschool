@@ -21,6 +21,8 @@ abstract class Protocol {
   /// return the protocol prefix - e.g. file for file:// or ws for ws://
   String get protocol;
   
+  Future connect();
+  
   /**
    *  List the files and directories at the given path.
    *  Returns null if the given path is not a readable directory.
@@ -36,4 +38,6 @@ abstract class Protocol {
    * Opens the given path for reading.
    */
   Stream<List<int>> open(String path);
+  
+  Future close();
 }
