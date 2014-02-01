@@ -26,6 +26,11 @@ void main() {
               Map response = {};
               response['files'] = list.map((e) => { 'path': e.path, 'isDirectory': e is Directory, 'size': e.statSync().size }).toList();
               socket.add(JSON.encode(response));
+            } else if (cmd == 'read') {
+              var path = data['path'];
+              File f = new File("./${path}");
+              Map response = {'content': f.readAsStringSync()};
+              socket.add(JSON.encode(response));
             }
           });
         });

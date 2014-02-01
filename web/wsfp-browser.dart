@@ -2,7 +2,8 @@ import 'package:polymer/polymer.dart';
 import 'dart:html';
 import 'package:dartflightschool/protocol.dart' as p;
 import 'package:dartflightschool/dummyimpl.dart';
-import 'dart:async'; 
+import 'dart:async';
+import 'package:dartflightschool/localfilesystem.dart';
 
 class UrlData {
   String protocol;
@@ -107,7 +108,7 @@ class WsfpBrowser extends PolymerElement {
         newProtocol = new DummyFs();
         break;
       case "localfile":
-        
+        newProtocol = new FileSystemAccess();
         break;
     }
     
