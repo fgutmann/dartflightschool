@@ -113,6 +113,7 @@ class WsfpBrowser extends PolymerElement {
         break;
       case "wsfp":
         newProtocol = new WebSocketFs(url.server);
+        break;
     }
     
     Completer<p.Protocol> connectedProtocol = new Completer();
