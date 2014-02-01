@@ -5,8 +5,10 @@ import 'dart:html';
 
 @CustomTag("wsfp-rootcomponent")
 class WsfpRootComponent extends PolymerElement {
+  
+  bool get applyAuthorStyles => true;
+  
   WsfpRootComponent.created() : super.created() {
-    print("hello");
   }
   
   void blahClicked(Event e, var detail, Element target) {
