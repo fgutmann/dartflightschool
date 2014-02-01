@@ -6,7 +6,9 @@
       </div>
     </from>
     <ul class="list-group">
-      <li class="list-group-item">Cras justo odio</li>
+      <template repeat="{{file in currentFiles}}">
+        <li class="list-group-item">{{file.name}}</li>
+      </template>
     </ul>
   </template>
 

@@ -41,16 +41,26 @@ class WsfpBrowser extends PolymerElement {
   p.Protocol currentProtocol;
   
   /// initialization logic
-  WsfpBrowser.created() : super.created() {}
+  WsfpBrowser.created() : super.created() {
+    currentFiles.add(new p.File("test", true, 1));
+  }
   
   enteredView() {
     super.enteredView();
     
     $['wsfp-url'].onKeyPress.listen((KeyboardEvent event) {
       if(event.keyCode == 13) {
-        var urlData = new UrlData.fromString(url);
-        getProtocol(urlData);
-        
+        try {
+          var urlData = new UrlData.fromString(url);
+          var protocol = getProtocol(urlData);
+          if(protocol == null) {
+            this.url = 'unsupported protocol ' + urlData.protocol;
+          } else {
+            list(protocol, urlData.path);
+          }
+        } catch (Exception) {
+          this.url = 'invalid url';
+        }
       }
     });    
   }
@@ -76,9 +86,13 @@ class WsfpBrowser extends PolymerElement {
          currentProtocol = new DummyFs();
          break;
     }
+    
+    return currentProtocol;
   }
   
   void list(p.Protocol protocol, String path) {
-    
+    protocol.list(path).then((files) {
+      this.currentFiles = files;
+    });
   }
 }
