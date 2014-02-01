@@ -9,7 +9,6 @@ final bool persistent = true;
 class FileSystemAccess extends Protocol {
   Future<List<File>> list(String path) {
     var completer = new Completer();
-    window.navigator.persistentStorage.requestQuota(size);
     window.requestFileSystem(size, persistent: persistent).then((fs){
       List<File> files = new List<File>();
       DirectoryEntry root = fs.root;
@@ -25,7 +24,13 @@ class FileSystemAccess extends Protocol {
   }
 
   Stream<List<int>> open(String path) {
-    // TODO: implement open
+    FileSystem fileSystem;
+    window.requestFileSystem(size, persistent: persistent).then((fs){
+      fileSystem = fs;
+    });
+    while(fileSystem == null) {
+    }
+    return fs.root.getFile(path).asStream();
   }
 
   StreamConsumer openWrite(String path) {
@@ -37,6 +42,8 @@ class FileSystemAccess extends Protocol {
   }
 
   Future connect() {
+    //on connect request quota from browser
+    window.navigator.persistentStorage.requestQuota(size);
     return new Completer()..complete().future;
   }
 
