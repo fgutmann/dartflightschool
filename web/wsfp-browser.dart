@@ -12,7 +12,7 @@ class WsfpBrowser extends PolymerElement {
 
   bool get applyAuthorStyles => true;
 
-  @observable
+  @observable @published
   String url = "dummy:///";
 
   @observable
