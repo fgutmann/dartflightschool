@@ -22,4 +22,7 @@ class DummyFs extends Protocol {
   StreamSink openWrite(String path) {
     return null;
   }
+
+  @override
+  String get protocol => "dummy";
 }
