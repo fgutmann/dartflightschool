@@ -22,13 +22,13 @@ class WebSocketFs extends p.Protocol {
   }
 
   @override
-  Stream<List<int>> open(String path) {
-    // TODO: implement open
+  Future<Stream<List<int>>> open(String path) {
+    return null;
   }
 
   @override
-  StreamConsumer<List<int>> openWrite(String path) {
-    // TODO: implement openWrite
+  Future<StreamConsumer<List<int>>> openWrite(String path) {
+    return null;
   }
 
   // TODO: implement protocol

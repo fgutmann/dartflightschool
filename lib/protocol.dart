@@ -32,12 +32,12 @@ abstract class Protocol {
   /**
    * Opens the given path for writing.
    */
-  StreamConsumer<List<int>> openWrite(String path);
+  Future<StreamConsumer<List<int>>> openWrite(String path);
   
   /**
    * Opens the given path for reading.
    */
-  Stream<List<int>> open(String path);
+  Future<Stream<List<int>>> open(String path);
   
   Future close();
 }
