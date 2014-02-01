@@ -32,24 +32,29 @@ class WsfpBrowser extends PolymerElement {
     
     $['wsfp-url'].onKeyPress.listen((KeyboardEvent event) {
       if(event.keyCode == 13) {
+         normalizeUrl();
         updateView();
       }
     });
   }
   
+  normalizeUrl() {
+    if(url.endsWith("/")) {
+      url = url.substring(0, url.length -1);
+    }
+  }
+  
   onDirectoryClick(Event e, var detail, Element target) {
-     var name = target.attributes["data-name"];
-     if(name == "..") {
-       url = (url.split('/')..removeLast()).join("/") + "/";
-     } else {
-       url += (name + '/');       
-     }
-     
-     if(url.endsWith("/")) {
-       url = url.substring(0, url.length -1);
-     }
-     
-     updateView();
+    var name = target.attributes["data-name"];
+    normalizeUrl();
+    
+    if(name == "..") {
+      url = (url.split('/')..removeLast()).join("/");
+    } else {
+      url += '/' + name;       
+    }
+    
+    updateView();
   }
   
   updateView() {
