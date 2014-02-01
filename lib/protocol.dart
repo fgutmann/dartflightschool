@@ -26,8 +26,6 @@ abstract class Protocol {
   /**
    * Opens the given path for writing.
    */
-  // TODO: change type of IOSink, must be stream or something other
-  // IOSink is defined in dart:io which won't work in browsers
   EventSink openWrite(String path);
   
   /**
