@@ -1,6 +1,7 @@
 name: dartflightschool
 description: A sample command-line application
 dependencies:
+  path: any
   polymer: any
 dev_dependencies:
   unittest: any

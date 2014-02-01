@@ -41,6 +41,7 @@ class WebSocketFs extends p.Protocol {
   Future connect() {
     var completer = new Completer();
     _socket = new WebSocket('ws://${_server}/ws');
+    print('connecting to ws://${_server}/ws');
     _socket.onOpen.listen((Event e) {
       print('onOpen');
       completer.complete();
@@ -57,9 +58,13 @@ class WebSocketFs extends p.Protocol {
       print('got message: ${message.data}');
       var msg = JSON.decode(message.data);
       List files = msg['files'];
-      List<p.File> ret = files.map((Map<String, dynamic> e) => new p.File(e['path'], e['isDirectory'], e['size'])).toList();
+      List<p.File> ret = files.map((Map<String, dynamic> e) => new p.File(e['name'], e['isDirectory'], e['size'])).toList();
       _fileListCompleter.complete(ret);
       _fileListCompleter = null;
+    });
+    _socket.onClose.listen((e) {
+      print('onClose. :( -> reconnect.');
+//      connect();
     });
     return completer.future;
   }
