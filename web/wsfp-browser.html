@@ -1,0 +1,16 @@
+<polymer-element name="wsfp-browser">
+  <template>
+    <from class="form">
+      <div class="form-group">
+        <input class="form-control" id="wsfp-url" type="text" name="url" value="{{url}}" placeholder="URL" />
+      </div>
+    </from>
+    <ul class="list-group">
+      <template repeat="{{file in currentFiles}}">
+        <li class="list-group-item">{{file.name}}</li>
+      </template>
+    </ul>
+  </template>
+
+  <script type="application/dart" src="wsfp-browser.dart"></script>
+</polymer-element>

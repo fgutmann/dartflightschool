@@ -17,21 +17,27 @@ class File {
 }
 
 abstract class Protocol {
+  
+  /// return the protocol prefix - e.g. file for file:// or ws for ws://
+  String get protocol;
+  
+  Future connect();
+  
   /**
    *  List the files and directories at the given path.
    *  Returns null if the given path is not a readable directory.
    */
-  List<File> list(String path);
+  Future<List<File>> list(String path);
   
   /**
    * Opens the given path for writing.
    */
-  // TODO: change type of IOSink, must be stream or something other
-  // IOSink is defined in dart:io which won't work in browsers
-  EventSink openWrite(String path);
+  StreamConsumer<List<int>> openWrite(String path);
   
   /**
    * Opens the given path for reading.
    */
   Stream<List<int>> open(String path);
+  
+  Future close();
 }
