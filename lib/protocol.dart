@@ -1,5 +1,7 @@
+library wsfp.abc;
+
 import 'dart:async';
-import 'dart:io';
+
 
 class File {
   /// The name of the file or directory
@@ -26,7 +28,7 @@ abstract class Protocol {
    */
   // TODO: change type of IOSink, must be stream or something other
   // IOSink is defined in dart:io which won't work in browsers
-  IOSink openWrite(String path);
+  EventSink openWrite(String path);
   
   /**
    * Opens the given path for reading.
