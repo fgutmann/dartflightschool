@@ -26,7 +26,7 @@ abstract class Protocol {
   /**
    * Opens the given path for writing.
    */
-  EventSink openWrite(String path);
+  StreamSink openWrite(String path);
   
   /**
    * Opens the given path for reading.
