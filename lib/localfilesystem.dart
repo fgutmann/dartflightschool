@@ -1,3 +1,5 @@
+library localfilesystem;
+
 import 'protocol.dart';
 import 'dart:html' show window, FileSystem, FileEntry, FileWriter, Blob, DirectoryEntry;
 import 'dart:async';
@@ -23,28 +25,29 @@ class FileSystemAccess extends Protocol {
     return completer.future;
   }
 
-  Stream<List<int>> open(String path) {
+  Future<Stream<List<int>>> open(String path) {
     FileSystem fileSystem;
     window.requestFileSystem(size, persistent: persistent).then((fs){
       fileSystem = fs;
     });
-    while(fileSystem == null) {
-    }
-    return fs.root.getFile(path).asStream();
+//    while(fileSystem == null) {
+//    }
+//    return fs.root.getFile(path).asStream();
+    return null;
   }
 
-  StreamConsumer openWrite(String path) {
-    return new FileSystemAccessStreamSink(path);
+  Future<StreamConsumer> openWrite(String path) {
+    return null;//new FileSystemAccessStreamSink(path);
   }
 
   Future close() {
-    return new Completer()..complete().future;
+    return (new Completer()..complete()).future;
   }
 
   Future connect() {
     //on connect request quota from browser
     window.navigator.persistentStorage.requestQuota(size);
-    return new Completer()..complete().future;
+    return (new Completer()..complete()).future;
   }
 
   String get protocol => "localfile";
@@ -72,14 +75,14 @@ class FileSystemAccessStreamSink extends StreamConsumer<List<int>> {
             });
             completer.complete();
           });
-        }, onError: errorHandling);
+        });
       });
     });
     return completer.future;
   }
 
   Future close() {
-    return;
+    return (new Completer()..complete()).future;
   }
 
 }

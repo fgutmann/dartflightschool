@@ -1,3 +1,5 @@
+library websocketprotocol;
+
 import 'protocol.dart' as p;
 import 'dart:html';
 import 'dart:async';
@@ -22,13 +24,13 @@ class WebSocketFs extends p.Protocol {
   }
 
   @override
-  Stream<List<int>> open(String path) {
-    // TODO: implement open
+  Future<Stream<List<int>>> open(String path) {
+    return null;
   }
 
   @override
-  StreamConsumer<List<int>> openWrite(String path) {
-    // TODO: implement openWrite
+  Future<StreamConsumer<List<int>>> openWrite(String path) {
+    return null;
   }
 
   // TODO: implement protocol
@@ -55,7 +57,7 @@ class WebSocketFs extends p.Protocol {
       print('got message: ${message.data}');
       var msg = JSON.decode(message.data);
       List files = msg['files'];
-      List<p.File> ret = files.map((Map<String, dynamic> e) => new p.File(e['name'], e['isDirectory'], e['size'])).toList();
+      List<p.File> ret = files.map((Map<String, dynamic> e) => new p.File(e['path'], e['isDirectory'], e['size'])).toList();
       _fileListCompleter.complete(ret);
       _fileListCompleter = null;
     });

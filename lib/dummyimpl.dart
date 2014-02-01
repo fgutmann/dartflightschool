@@ -43,18 +43,20 @@ class DummyFs extends Protocol {
   }
 
   @override
-  Stream<List<int>> open(String path) {
+  Future<Stream<List<int>>> open(String path) {
     var f = getFileByPath(path);
     List<int> data = datafiles[f];
-    return new Stream.fromIterable([data]);
+//    return new Stream.fromIterable([data]);
+    return null;
   }
   
 
   @override
-  StreamConsumer<List<int>> openWrite(String path) {
+  Future<StreamConsumer<List<int>>> openWrite(String path) {
     var f = new File(path, false, 3);
     myfiles.add(f);
-    return new DummyStreamConsumer(this, f);
+//    return new DummyStreamConsumer(this, f);
+    return null;
   }
 
   @override
