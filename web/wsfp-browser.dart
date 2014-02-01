@@ -39,15 +39,30 @@ class WsfpBrowser extends PolymerElement {
   }
   
   normalizeUrl() {
-    if(url.endsWith("/")) {
-      url = url.substring(0, url.length -1);
+    var data = new UrlData.fromString(url);
+    
+    print(data.protocol);
+    print(data.server);
+    print(data.path);
+    
+    var normalized = data.protocol + "://" + data.server;
+    if(!data.path.startsWith("/")) {
+      normalized += "/";
     }
+    normalized += data.path;
+    
+    url = normalized;
+    
+    print("normalized" + normalized);
   }
   
   onDirectoryClick(Event e, var detail, Element target) {
     var name = target.attributes["data-name"];
     normalizeUrl();
     
+    print("name" + name);
+    print("url" + url);
+
     if(name == "..") {
       url = (url.split('/')..removeLast()).join("/");
     } else {
