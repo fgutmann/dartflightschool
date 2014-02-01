@@ -16,7 +16,7 @@ class WebSocketFs extends p.Protocol {
   @override
   Future<List<p.File>> list(String path) {
     _fileListCompleter = new Completer<List<p.File>>();
-    var data = JSON.encode({'cmd': 'listfiles'});
+    var data = JSON.encode({'cmd': 'listfiles', 'path': path});
     _socket.send(data);
     return _fileListCompleter.future;
   }
@@ -55,7 +55,7 @@ class WebSocketFs extends p.Protocol {
       print('got message: ${message.data}');
       var msg = JSON.decode(message.data);
       List files = msg['files'];
-      List<p.File> ret = files.map((Map<String, String> e) => new p.File(e['name'], false, 0)).toList();
+      List<p.File> ret = files.map((Map<String, dynamic> e) => new p.File(e['name'], e['isDirectory'], e['size'])).toList();
       _fileListCompleter.complete(ret);
       _fileListCompleter = null;
     });

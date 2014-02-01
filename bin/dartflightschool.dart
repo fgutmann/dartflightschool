@@ -17,10 +17,14 @@ void main() {
             var data = JSON.decode(message);
             var cmd = data['cmd'];
             if (cmd == 'listfiles') {
-              var dir = new Directory(".");
+              var path = data['path'];
+              var dir = new Directory("./${path}");
+              print("dir: ${dir} // path: ${path}");
+              
               List<FileSystemEntity> list = dir.listSync(recursive: false);
+              print("file list: ${list}");
               Map response = {};
-              response['files'] = list.map((e) => { 'path': e.path, 'size': e.statSync().size }).toList();
+              response['files'] = list.map((e) => { 'path': e.path, 'isDirectory': e is Directory, 'size': e.statSync().size }).toList();
               socket.add(JSON.encode(response));
             }
           });
