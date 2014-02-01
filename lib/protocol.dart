@@ -30,7 +30,7 @@ abstract class Protocol {
   /**
    * Opens the given path for writing.
    */
-  StreamSink openWrite(String path);
+  StreamConsumer<List<int>> openWrite(String path);
   
   /**
    * Opens the given path for reading.
