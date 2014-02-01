@@ -59,4 +59,15 @@ class DummyFs extends Protocol {
 
   @override
   String get protocol => "dummy";
+
+  @override
+  Future connect() {
+    return (new Completer()..complete()).future;
+  }
+  
+  @override
+  Future close() {
+    return (new Completer()..complete()).future;
+  }
+
 }
