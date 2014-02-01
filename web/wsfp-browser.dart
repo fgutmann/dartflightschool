@@ -5,33 +5,14 @@ import 'package:dartflightschool/dummyimpl.dart' as dummy;
 import 'dart:async';
 import 'package:dartflightschool/localfilesystem.dart' as lfs;
 import 'package:dartflightschool/websocketprotocol.dart';
-
-class UrlData {
-  String protocol;
-  String server;
-  String path;
-  
-  UrlData(this.protocol, this.server, this.path);
-  
-  UrlData.fromString(String url) {
-    var regex = new RegExp('([^:]+)://([^/]*)/(.*)');
-    var match = regex.matchAsPrefix(url);
-    if(match == null) {
-      throw new Exception("Not a valid url");
-    }
-    
-    protocol = match.group(1);
-    server = match.group(2);
-    path = match.group(3);
-  }
-}
+import 'package:dartflightschool/urldata.dart';
 
 @CustomTag("wsfp-browser")
 class WsfpBrowser extends PolymerElement {
 
   bool get applyAuthorStyles => true;
 
-  @observable
+  @observable @published
   String url = "dummy:///";
 
   @observable
@@ -56,6 +37,21 @@ class WsfpBrowser extends PolymerElement {
     });
   }
   
+  onDirectoryClick(Event e, var detail, Element target) {
+     var name = target.attributes["data-name"];
+     if(name == "..") {
+       url = (url.split('/')..removeLast()).join("/") + "/";
+     } else {
+       url += (name + '/');       
+     }
+     
+     if(url.endsWith("/")) {
+       url = url.substring(0, url.length -1);
+     }
+     
+     updateView();
+  }
+  
   updateView() {
     try {
       var urlData = new UrlData.fromString(url);
@@ -72,17 +68,18 @@ class WsfpBrowser extends PolymerElement {
     }
   }
   
-  onDirectoryClick(Event e, var detail, Element target) {
-     var name = target.attributes["data-name"];
-     if(name == "..") {
-       url = (url.split('/')..removeLast()).join("/") + "/";
-     } else {
-       url += (name + '/');       
-     }
-     
-     print(url);
-     updateView();
+  void list(p.Protocol protocol, String path) {
+    protocol.list(path).then((files) {
+      var newFiles = new List<p.File>();
+      
+      if(new UrlData.fromString(url).path != "") {
+        newFiles.add(new p.File("..", true, 0));
+      }
+      newFiles.addAll(files);
+      this.currentFiles = newFiles;
+    });
   }
+  
   
   /**
    * Parses the url and returns protocol and path.
@@ -113,6 +110,7 @@ class WsfpBrowser extends PolymerElement {
         break;
       case "wsfp":
         newProtocol = new WebSocketFs(url.server);
+        break;
     }
     
     Completer<p.Protocol> connectedProtocol = new Completer();
@@ -121,21 +119,5 @@ class WsfpBrowser extends PolymerElement {
     });
     currentProtocol = connectedProtocol.future;
     return connectedProtocol.future;
-  }
-  
-  void list(p.Protocol protocol, String path) {
-    protocol.list(path).then((files) {
-      var newFiles = new List<p.File>();
-      
-      print("url:" + url);
-      print("path:" + new UrlData.fromString(url).path);
-      
-      
-      if(new UrlData.fromString(url).path != "") {
-        newFiles.add(new p.File("..", true, 0));
-      }
-      newFiles.addAll(files);
-      this.currentFiles = newFiles;
-    });
   }
 }
