@@ -72,6 +72,11 @@ class WsfpBrowser extends PolymerElement {
     updateView();
   }
   
+  onFileCopyClick(Event e, var detail, Element target) {
+    var name = target.attributes["data-name"];
+    
+  }
+  
   updateView() {
     try {
       var urlData = new UrlData.fromString(url);

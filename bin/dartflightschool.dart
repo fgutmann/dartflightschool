@@ -4,9 +4,9 @@ import 'package:path/path.dart' as path;
 
 void main() {
   print("Hello, World!");
-  String host = '127.0.0.1';
+  String host = '0.0.0.0';
   int port = 1234;
-  HttpServer.bind('127.0.0.1', port).then((HttpServer server) {
+  HttpServer.bind(host, port).then((HttpServer server) {
     print("We bound our server.");
     server.listen((HttpRequest req) {
       print("got a request!");
