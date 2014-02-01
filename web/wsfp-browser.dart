@@ -4,6 +4,7 @@ import 'package:dartflightschool/protocol.dart' as p;
 import 'package:dartflightschool/dummyimpl.dart' as dummy;
 import 'dart:async';
 import 'package:dartflightschool/localfilesystem.dart' as lfs;
+import 'package:dartflightschool/websocketprotocol.dart';
 
 class UrlData {
   String protocol;
@@ -110,6 +111,8 @@ class WsfpBrowser extends PolymerElement {
       case "localfile":
         newProtocol = new lfs.FileSystemAccess();
         break;
+      case "wsfp":
+        newProtocol = new WebSocketFs(url.server);
     }
     
     Completer<p.Protocol> connectedProtocol = new Completer();
